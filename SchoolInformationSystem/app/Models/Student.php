@@ -15,16 +15,20 @@ class Student extends Model
     protected $collection = 'students';
 
     protected $fillable = [
-        'name',
-        'kelas',
-        'latihan1',
-        'latihan2',
-        'latihan3',
-        'latihan4',
-        'ulanganHarian1',
-        'ulanganHarian2',
-        'uts',
-        'uas',
-        'nilai'
+        'name', 'kelas', 'matakuliah'
+    ];
+    protected $embeds = [
+        'matakuliah' => [
+            'namaMK' => [],
+            'LT1' => [],
+            'LT2' => [],
+            'LT3' => [],
+            'LT4' => [],
+            'UH1' => [],
+            'UH2' => [],
+            'UTS' => [],
+            'UAS' => [],
+            'nilai' => []
+        ],
     ];
 }

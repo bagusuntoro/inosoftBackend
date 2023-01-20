@@ -20,12 +20,21 @@ use Illuminate\Support\Facades\Route;
 // });
 
 // Route::apiResource('students', StudentController::class);
+
+// route kelas
 Route::get('students/listKelas', [StudentController::class, 'listKelas']);
 Route::get('students/detailKelas/{kelas}', [StudentController::class, 'detailKelas']);
+Route::post('students/addKelas', [StudentController::class, 'addKelas']);
+Route::put('students/updateKelas/{id}', [StudentController::class, 'updateKelas']);
+
+// route mahasiswa
 Route::get('students/listMahasiswa', [StudentController::class, 'listMahasiswa']);
 Route::get('students/detailMahasiswa/{id}', [StudentController::class, 'detailMahasiswa']);
-
 Route::get('students/index', [StudentController::class, 'index']);
+
+// Route Nilai
+Route::get('students/detailNilai/{id}', [StudentController::class, 'detailNilai']);
+
 // Route::post('students/store', [StudentController::class, 'store']);
 // Route::get('students/show/{id}', [StudentController::class, 'show']);
 // Route::put('students/update/{id}', [StudentController::class, 'update']);

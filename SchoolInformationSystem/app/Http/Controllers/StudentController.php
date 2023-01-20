@@ -17,7 +17,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = Student::paginate(10);
+        $students = Student::paginate(15);
         return response()->json([
             'data' => $students
         ]);
@@ -91,16 +91,60 @@ class StudentController extends Controller
         ]);
     }
 
+    // add kelas
+    public function addkelas(Request $request)
+    {
+        $student = Student::create([
+            'kelas' => $request->kelas
+        ]);
+        return response()->json([
+            'data' => $student
+        ]);
+    }
+
+    // update kelas
+    public function updateKelas(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'kelas' => 'required|string|max:255',
+        ]);
+    
+        $student = Student::find($id);
+        if(!$student) {
+            return response()->json([
+                'message' => 'Student not found'
+            ],404);
+        }
+        $student->kelas = $validatedData['kelas'];
+        try {
+            $student->save();
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to update student kelas',
+                'error' => $e->getMessage()
+            ], 400);
+        }
+        return response()->json([
+            'data' => $student
+        ]);
+    }
+    
+
+
+
+
+
     // list mahasiswa
     public function listMahasiswa()
     {
         $students = Student::all();
         $data = [];
         foreach($students as $student) {
-            $data[] = [
-                'name' => $student->name,
-                'nilai' => $student->nilai
-            ];
+                // $nilai = ($student->matakuliah['LT1'] + $student->matakuliah['LT2'] + $student->matakuliah['LT3'] + $student->matakuliah['LT4'] + $student->matakuliah['UH1'] + $student->matakuliah['UH2'] + $student->matakuliah['UTS'] + $student->matakuliah['UAS']) / 8;
+                $data[] = [
+                    'name' => $student->name,
+                    // 'nilai' => $nilai
+                ];
         }
         return response()->json([
             'data' => $data
@@ -108,23 +152,80 @@ class StudentController extends Controller
     }
 
 
+
+
+
     // detail mahasiswa
     public function detailMahasiswa($id)
     {
         $student = Student::find($id);
+        if(!$student) {
+            return response()->json([
+                'message' => 'Student not found'
+            ],404);
+        }
+
+        $LT = (
+            (
+            $student->matakuliah['LT1'] + 
+            $student->matakuliah['LT2'] + 
+            $student->matakuliah['LT3'] + 
+            $student->matakuliah['LT4'] 
+            )/4
+        )*15/100;
+
+        $UH = (
+            (
+            $student->matakuliah['UH1'] + 
+            $student->matakuliah['UH2'] 
+            )/2
+        )*20/100;
+
+
+
+        $nilai = (
+            $LT+
+            $UH+
+            ($student->matakuliah['UTS']*25)/100 + 
+            ($student->matakuliah['UAS']*40)/100
+            ) / 4;
+        
         return response()->json([
-            'name' => $student->name,
-            'latihan1' => $student->latihan1,
-            'latihan2' => $student->latihan2,
-            'latihan3' => $student->latihan3,
-            'latihan4' => $student->latihan4,
-            'ulanganHarian1' => $student->ulanganHarian1,
-            'ulanganHarian2' => $student->ulanganHarian2,
-            'uts' => $student->uts,
-            'uas' => $student->uas,
+        'name' => $student->name,
+        'namaMK' => $student->matakuliah['namaMK'],
+        'nilai' => $nilai
+        ]);
+    }    
+    
+    
+
+
+    // detail nilai
+    public function detailNilai($id)
+    {
+        $student = Student::find($id);
+        if(!$student) {
+            return response()->json([
+                'message' => 'Student not found'
+            ],404);
+        }
+    
+        $data = [
+            'namaMK' => $student->matakuliah['namaMK'],
+            'LT1' => $student->matakuliah['LT1'],
+            'LT2' => $student->matakuliah['LT2'],
+            'LT3' => $student->matakuliah['LT3'],
+            'LT4' => $student->matakuliah['LT4'],
+            'UH1' => $student->matakuliah['UH1'],
+            'UH2' => $student->matakuliah['UH2'],
+            'UTS' => $student->matakuliah['UTS'],
+            'UAS' => $student->matakuliah['UAS']
+        ];
+        return response()->json([
+            'data' => $data
         ]);
     }
-
+    
 
 
     /**
