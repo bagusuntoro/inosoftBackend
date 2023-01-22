@@ -1,47 +1,41 @@
 <?php
 
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\KelasController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 
-// Route::apiResource('students', StudentController::class);
+// list kelas
+Route::get('kelas', [KelasController::class, 'index']);
+// detail kelas dengan data mahasiswa 
+Route::get('kelas/detail/{id}', [KelasController::class, 'detailKelas']);
+// add new kelas
+Route::post('kelas', [KelasController::class, 'addKelas']);
+// update kelas
+Route::put('kelas/{id}', [KelasController::class, 'updateKelas']);
+// delete kelas
+Route::delete('kelas/{id}', [KelasController::class, 'deleteKelas']); // additional fitur
 
-// route kelas
-Route::get('students/listKelas', [StudentController::class, 'listKelas']);
-Route::get('students/detailKelas/{kelas}', [StudentController::class, 'detailKelas']);
-Route::post('students/addKelas', [StudentController::class, 'addKelas']);
-Route::put('students/updateKelas/{id}', [StudentController::class, 'updateKelas']);
 
-// route mahasiswa
-Route::get('students/listMahasiswa', [StudentController::class, 'listMahasiswa']);
-Route::get('students/detailMahasiswa/{id}', [StudentController::class, 'detailMahasiswa']);
-Route::get('students/index', [StudentController::class, 'index']);
+// list mahasiswa
+Route::get('mahasiswa', [MahasiswaController::class, 'index']);
+// detail mahasiswa dengan nilai permatakuliah
+Route::get('mahasiswa/detail/{id}', [MahasiswaController::class, 'detailMahasiswa']);
+// add new mahasiswa
+Route::post('mahasiswa', [MahasiswaController::class, 'addMahasiswa']); // additional fitur
+// update mahasiswa
+Route::put('mahasiswa/{id}', [MahasiswaController::class, 'updateMahasiswa']); // additional fitur
+// delete mahasiswa
+Route::delete('mahasiswa/{id}', [MahasiswaController::class, 'deleteMahasiswa']); // additional fitur
 
-// Route Nilai
-Route::get('students/detailNilai/{id}', [StudentController::class, 'detailNilai']);
 
-// Route::post('students/store', [StudentController::class, 'store']);
-// Route::get('students/show/{id}', [StudentController::class, 'show']);
-// Route::put('students/update/{id}', [StudentController::class, 'update']);
-// Route::delete('students/destroy/{id}', [StudentController::class, 'destroy']);
 
-// Route::get('/students', [StudentController::class, 'index']);
-// Route::post('/students', [StudentController::class, 'store']);
-// Route::get('/students/{id}', [StudentController::class, 'show']);
-// Route::put('/students/{id}', [StudentController::class, 'update']);
-// Route::delete('/students/{id}', [StudentController::class, 'destroy']);
+// list all nilai
+Route::get('mahasiswa/nilai', [MahasiswaController::class, 'listNilai']); // additional fitur 
+// detail nilai per matakuliah
+Route::get('mahasiswa/nilai/{id}', [MahasiswaController::class, 'detailNilai']);
+// add new nilai
+Route::post('mahasiswa/nilai', [MahasiswaController::class, 'addNilai']);
