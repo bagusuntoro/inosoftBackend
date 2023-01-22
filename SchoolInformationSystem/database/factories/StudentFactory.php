@@ -17,15 +17,18 @@ class StudentFactory extends Factory
         return [
             'name' => $this->faker->text(10),
             'kelas' => $this->faker->numberBetween(10, 20),
-            'latihan1' => $this->faker->numberBetween(10, 100),
-            'latihan2' => $this->faker->numberBetween(10, 100),
-            'latihan3' => $this->faker->numberBetween(10, 100),
-            'latihan4' => $this->faker->numberBetween(10, 100),
-            'ulanganHarian1' => $this->faker->numberBetween(10, 100),
-            'ulanganHarian2' => $this->faker->numberBetween(10, 100),
-            'uts' => $this->faker->numberBetween(10, 100),
-            'uas' => $this->faker->numberBetween(10, 100),
-            'nilai' => $this->faker->numberBetween(10, 100),
+            'matakuliah' => [
+                'namaMK' => $this->faker->text(10),
+                'LT1' => $this->faker->numberBetween(10, 100),
+                'LT2' => $this->faker->numberBetween(10, 100),
+                'LT3' => $this->faker->numberBetween(10, 100),
+                'LT4' => $this->faker->numberBetween(10, 100),
+                'UH1' => $this->faker->numberBetween(10, 100),
+                'UH2' => $this->faker->numberBetween(10, 100),
+                'UTS' => $this->faker->numberBetween(10, 100),
+                'UAS' => $this->faker->numberBetween(10, 100),
+                'nilai' => $this->faker->numberBetween(10, 100)
+            ]
         ];
     }
 }
