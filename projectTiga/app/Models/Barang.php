@@ -8,12 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Barang extends Model
 {
     use HasFactory;
-    
-    protected $fileable=[
-        'name',
-        'price',
-        'stock',
-        'description',
-        'image'
-    ];
+    protected $guarded = [];
 }

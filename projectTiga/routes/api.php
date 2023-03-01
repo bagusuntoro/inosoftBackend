@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BarangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route: 
+
+
+// jwt
+
+
+
+// Route::apiResource('/barang',BarangController::class);
+
+Route::get('/barang',[BarangController::class, 'index']);
+Route::post('/barang',[BarangController::class, 'store']);
+Route::get('/barang/{id}',[BarangController::class, 'show']);
+Route::put('/barang/{id}',[BarangController::class, 'update']);
+Route::delete('/barang/{id}',[BarangController::class, 'destroy']);

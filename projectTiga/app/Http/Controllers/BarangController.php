@@ -16,8 +16,7 @@ class BarangController extends Controller
     {
         $data = Barang::latest()->get();
         $title= 'Master Data';
-        return view('barang.index', [
-            'judul' => $title,
+        return response()->json([
             'data' => $data
         ]);
     }
@@ -40,7 +39,17 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $barangs = Barang::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'description' => $request->description,
+            'image' => $request->image
+        ]);
+
+        return response()->json([
+            'data' => $barangs
+        ]);
     }
 
     /**
@@ -50,8 +59,11 @@ class BarangController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
+    {   
+        $barangs = Barang::find($id);
+        return response()->json([
+            'data' =>$barangs
+        ]);
     }
 
     /**
@@ -74,7 +86,17 @@ class BarangController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $barangs = Barang::find($id);
+        $barangs->name = $request->name;
+        $barangs->price = $request->price;
+        $barangs->stock = $request->stock;
+        $barangs->description = $request->description;
+        $barangs->image = $request->image;
+
+        $barangs->save();
+        return response()->json([
+            'data' => $barangs
+        ]);
     }
 
     /**
@@ -85,6 +107,10 @@ class BarangController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $barangs = Barang::findOrFail($id);
+        $barangs->delete();
+        return response()->json([
+            'message' => 'Barang deleted'
+        ]);
     }
 }
