@@ -14,4 +14,11 @@ use App\Http\Controllers\BarangController;
 |
 */
 
-Route::resource('/',BarangController::class);
+// Route::resource('/',BarangController::class);
+
+Route::get('/{any}', function () {
+  return view('welcome');
+})->where('any', '.*');
+// Route::get('/', function () {
+//   return view('welcome');
+// });
