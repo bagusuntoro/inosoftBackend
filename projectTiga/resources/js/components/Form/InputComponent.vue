@@ -48,32 +48,40 @@
             <input
               type="file"
               class="form-control"
-              id="i"
+              id="image"
               placeholder="input image"
-              ref="myFiles"
+              ref="myImage"
               @change="previewFiles"
             />
           </div>
         </div>
       </div>
 
-      <div class="mb-3">
-        <!-- <label for="description" class="form-label">Description</label>
-        <textarea
-          class="form-control"
-          v-model="form.description"
-          id="description"
-          rows="3"
-        ></textarea> -->
-        <label for="image" class="form-label">Video</label>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              class="form-control"
+              v-model="form.description"
+              id="description"
+              rows="3"
+            ></textarea>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label for="video" class="form-label">Video</label>
             <input
               type="file"
               class="form-control"
-              id="i"
+              id="video"
               placeholder="input image"
-              ref="myFiles"
+              ref="myVideo"
               @change="previewFiles"
             />
+          </div>
+        </div>
       </div>
 
       <div class="row">
@@ -100,32 +108,36 @@ export default {
         stock: "",
         description: "",
         image: null,
+        video: null,
       },
     };
   },
   methods: {
-    // handleSubmit() {
-    //   console.log(this.form);
-    //   axios.post("/api/barang", this.form).then((response) => {
-    //     console.log(response);
-    //   });
-    // },
     handleSubmit() {
-      console.log(this.form.image);
       let formData = new FormData();
+      console.log(this.form.video);
+      console.log(this.form.image);
       formData.append("name", this.form.name);
       formData.append("price", this.form.price);
       formData.append("stock", this.form.stock);
       formData.append("description", this.form.description);
       formData.append("image", this.form.image); // tambahkan field image ke objek FormData
+      formData.append("video", this.form.video); // tambahkan field video ke objek FormData
 
       axios.post("/api/barang", formData).then((response) => {
         console.log(response);
       });
+      this.form.name = "";
+      this.form.price = "";
+      this.form.stock = "";
+      this.form.description = "";
+      this.form.image = "";
+      this.form.video = "";
     },
-    previewFiles(){
-      this.form.image = this.$refs.myFiles.files[0];
-    }
+    previewFiles() {
+      this.form.image = this.$refs.myImage.files[0];
+      this.form.video = this.$refs.myVideo.files[0];
+    },
   },
 };
 </script>

@@ -38,7 +38,7 @@
               class="form-control"
               id="stock"
               placeholder="input stock"
-              v-model="items.price"
+              v-model="items.stock"
             />
           </div>
         </div>
@@ -50,21 +50,38 @@
               class="form-control"
               id="i"
               placeholder="input image"
-              ref="myFiles"
+              ref="myImage"
               @change="previewFiles"
             />
           </div>
         </div>
       </div>
 
-      <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <textarea
-          class="form-control"
-          v-model="items.description"
-          id="description"
-          rows="3"
-        ></textarea>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              class="form-control"
+              v-model="items.description"
+              id="description"
+              rows="3"
+            ></textarea>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label for="video" class="form-label">Video</label>
+            <input
+              type="file"
+              class="form-control"
+              id="video"
+              placeholder="input image"
+              ref="myVideo"
+              @change="previewFiles"
+            />
+          </div>
+        </div>
       </div>
 
       <div class="row">
@@ -96,13 +113,34 @@ export default {
       console.log(this.itemID);
       this.items = response.data.data;
     },
+
     handleSubmit() {
-      console.log(this.items);
+      let formData = new FormData();
+      console.log(this.items.video);
+      console.log(this.items.image);
+      formData.append("name", this.items.name);
+      formData.append("price", this.items.price);
+      formData.append("stock", this.items.stock);
+      formData.append("description", this.items.description);
+      formData.append("image", this.items.image); // tambahkan field image ke objek FormData
+      formData.append("video", this.items.video); // tambahkan field video ke objek FormData
+
       axios.put(`/api/barang/${this.itemID}`, this.items).then((response) => {
         console.log(response);
       });
+      this.items.name = "";
+      this.items.price = "";
+      this.items.stock = "";
+      this.items.description = "";
+      this.items.image = "";
+      this.items.video = "";
+    },
+    previewFiles() {
+      this.items.image = this.$refs.myImage.files[0];
+      this.items.video = this.$refs.myVideo.files[0];
     },
   },
+
   created() {
     // Panggil method fetchData saat pertama kali dijalankan
     this.fetchData();

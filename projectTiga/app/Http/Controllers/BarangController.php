@@ -38,33 +38,44 @@ class BarangController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        // $tujuan_upload = '/public/image';
+{
+    $validatedData = $request->validate([
+        'name' => 'required',
+        'price' => 'required|numeric',
+        'stock' => 'required|numeric',
+        'description' => 'required',
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'video' => 'required|mimes:mp4|max:10240' // set a reasonable maximum limit for video file size
+    ]);
 
-        $validateData = $request->validate([
-            'name' => 'required',
-            'price' => 'required|numeric',
-            'stock' => 'required|numeric',
-            'description' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
+    if ($request->hasFile('image') && $request->hasFile('video')) {
         $image = $request->file('image');
-        // $path = $image->store($tujuan_upload); // simpan gambar ke direktori
+        $video = $request->file('video');
+
         $image->storeAs('public/image', $image->hashName());
-        $barangs = Barang::create([
-            'name' => $request->name,
-            'price' => $request->price,
-            'stock' => $request->stock,
-            'description' => $request->description,
-            // 'image' => $path // simpan path gambar ke database
-            'image' => $image->hashName() // simpan path gambar ke database
-        ]);
+        $video->storeAs('public/video', $video->hashName());
+
+        $barang = new Barang();
+        $barang->name = $request->name;
+        $barang->price = $request->price;
+        $barang->stock = $request->stock;
+        $barang->description = $request->description;
+        $barang->image = $image->hashName(); // simpan path gambar ke database
+        $barang->video = $video->hashName(); // simpan path video ke database
+        $barang->save();
 
         return response()->json([
-            'data' => $barangs
+            'data' => $barang
         ]);
+    } else {
+        return response()->json([
+            'message' => 'Please provide both image and video files'
+        ], 400);
     }
+}
+
+
+
 
 
 
