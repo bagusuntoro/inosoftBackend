@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2 class="text-center mt-3 mb-5">Input Data Barang</h2>
-    <form @submit="handleSubmit">
+    <form @submit.prevent="handleSubmit" enctype="multipart/form-data">
       <div class="row">
         <div class="col-sm-6">
           <div class="mb-3">
@@ -46,24 +46,34 @@
           <div class="mb-3">
             <label for="image" class="form-label">Image</label>
             <input
-              type="text"
+              type="file"
               class="form-control"
               id="i"
               placeholder="input image"
-              v-model="form.image"
+              ref="myFiles"
+              @change="previewFiles"
             />
           </div>
         </div>
       </div>
 
       <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
+        <!-- <label for="description" class="form-label">Description</label>
         <textarea
           class="form-control"
           v-model="form.description"
           id="description"
           rows="3"
-        ></textarea>
+        ></textarea> -->
+        <label for="image" class="form-label">Video</label>
+            <input
+              type="file"
+              class="form-control"
+              id="i"
+              placeholder="input image"
+              ref="myFiles"
+              @change="previewFiles"
+            />
       </div>
 
       <div class="row">
@@ -89,17 +99,33 @@ export default {
         price: "",
         stock: "",
         description: "",
-        image: "",
+        image: null,
       },
     };
   },
   methods: {
+    // handleSubmit() {
+    //   console.log(this.form);
+    //   axios.post("/api/barang", this.form).then((response) => {
+    //     console.log(response);
+    //   });
+    // },
     handleSubmit() {
-      console.log(this.form);
-      axios.post("/api/barang", this.form).then((response) => {
+      console.log(this.form.image);
+      let formData = new FormData();
+      formData.append("name", this.form.name);
+      formData.append("price", this.form.price);
+      formData.append("stock", this.form.stock);
+      formData.append("description", this.form.description);
+      formData.append("image", this.form.image); // tambahkan field image ke objek FormData
+
+      axios.post("/api/barang", formData).then((response) => {
         console.log(response);
       });
     },
+    previewFiles(){
+      this.form.image = this.$refs.myFiles.files[0];
+    }
   },
 };
 </script>

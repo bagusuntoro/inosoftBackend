@@ -18,7 +18,10 @@
         <td>{{ item.price }}</td>
         <td>{{ item.stock }}</td>
         <td>{{ item.description }}</td>
-        <td>{{ item.image }}</td>
+        <td>
+          <img :src="'/storage/image/' + item.image" alt="image" width="200">
+          <!-- {{ 'public/storage/image/'+item.image }} -->
+        </td>
         <td>
           <router-link
             :to="{ name: 'update', params: { id: item.id } }"

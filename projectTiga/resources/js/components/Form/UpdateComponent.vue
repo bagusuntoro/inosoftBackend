@@ -46,11 +46,12 @@
           <div class="mb-3">
             <label for="image" class="form-label">Image</label>
             <input
-              type="text"
+              type="file"
               class="form-control"
-              id="image"
+              id="i"
               placeholder="input image"
-              v-model="items.image"
+              ref="myFiles"
+              @change="previewFiles"
             />
           </div>
         </div>

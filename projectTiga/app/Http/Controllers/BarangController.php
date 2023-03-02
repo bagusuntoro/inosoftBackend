@@ -39,18 +39,34 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
+        // $tujuan_upload = '/public/image';
+
+        $validateData = $request->validate([
+            'name' => 'required',
+            'price' => 'required|numeric',
+            'stock' => 'required|numeric',
+            'description' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $image = $request->file('image');
+        // $path = $image->store($tujuan_upload); // simpan gambar ke direktori
+        $image->storeAs('public/image', $image->hashName());
         $barangs = Barang::create([
             'name' => $request->name,
             'price' => $request->price,
             'stock' => $request->stock,
             'description' => $request->description,
-            'image' => $request->image
+            // 'image' => $path // simpan path gambar ke database
+            'image' => $image->hashName() // simpan path gambar ke database
         ]);
 
         return response()->json([
             'data' => $barangs
         ]);
     }
+
+
 
     /**
      * Display the specified resource.
